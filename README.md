@@ -30,4 +30,7 @@ Systemd の設定ファイルです。
 単独で使うときは /etc/systemd/system に配置して ```systemctl daemon-reload```
 ```systemctl start node-seqexec``` でスタート 再起動時に有効化されるようにするには ```systemctl enable nodeseqexec``` です。
 
- 
+-- test-seqtask.sh
+
+同時に複数の POST が行われた時のテスト用のスクリプト
+

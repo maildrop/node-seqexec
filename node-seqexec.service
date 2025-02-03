@@ -1,0 +1,21 @@
+[Unit]
+Description=node.js seqencial task executor 
+After=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+
+WorkingDirectory=/usr/libexec/node-seqexec
+ExecStart=/usr/bin/node /usr/libexec/node-seqexec/seqtask.js 
+ExecStop=/usr/bin/pkill -e node
+
+# Restart=always
+# RestartSec=2
+SyslogIdentifier=node-seqexec
+
+PrivateTmp=yes
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target

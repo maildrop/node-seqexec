@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# 疑似コマンド 競合があるので期待した通りには動かないが、テスト用なのでこれでよし
+# -o オプションで指定したファイルをオープンしてロック 
+# -s 書き出す内容 ここでは echo のみ
+
+while getopts s:o: OPT; do
+    case ${OPT} in
+        s) say=$OPTARG ;;
+        o) outputfile=$OPTARG ;;
+        *) exit 1 ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+(
+    # ファイルディスクリプタ 9 に対して flock をかける これは後の 9> から得られる
+    if flock -n 9 ; then
+        (
+            echo ${say:-""}
+            sleep 1 &
+            wait
+        ) >&9 
+    else
+        exit 1
+    fi
+) 9>>${outputfile:-output.wav} # ファイルデスクリプタ 9 を割り当てる
+
+

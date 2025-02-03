@@ -1,2 +1,3 @@
 # node-seqexec
-node.js sequncial executor
+
+node.js sequencial executor

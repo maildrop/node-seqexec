@@ -1,0 +1,12 @@
+Package: node-seqexec
+Source: node-seqexec
+Section: main/admin
+Priority: optional
+Maintainer: maildrop <mit@shalab.net>
+Build-Depends: debhelper (>=10) fakeroot make
+Standards-Version: 4.0.0
+Homepage: https://github.com/maildrop/node-seqexec
+Architecture: all
+Depends: systemd, nodejs
+Version: 0.0.0
+Description: node sequencial executor

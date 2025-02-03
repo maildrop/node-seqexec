@@ -14,9 +14,10 @@ apt install ./node-seqexec_0.0.0_all.deb
 ```
 ローカルの.debファイルをインストール出来ます。
 
-``
+```
 apt purge node-seqexe
 ```
+
 でアンインストールできます。
 
 ## file

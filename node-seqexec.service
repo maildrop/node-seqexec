@@ -8,7 +8,10 @@ DynamicUser=yes
 
 WorkingDirectory=/usr/libexec/node-seqexec
 ExecStart=/usr/bin/node /usr/libexec/node-seqexec/seqtask.js 
-ExecStop=/usr/bin/pkill -e node
+
+# 今 pidfile は無いので、これは要らない。
+# Systemd は ExecStart で作成したプロセスを覚えてるのでそのまま止めてくれる
+#ExecStop=/usr/bin/pkill -e node
 
 # Restart=always
 # RestartSec=2

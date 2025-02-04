@@ -9,7 +9,7 @@ DEB_LIBEXEC:=$(BUILD)/usr/libexec/$(PACKAGENAME)
 DEB_SYSTEMD_SYSTEM:=$(BUILD)/lib/systemd/system
 
 DEB_LIBEXEC_COMPONENT:=seqtask.js pseudo-job
-DEB_SYSTEMD_SYSTEM_COMPONENT:=control postinst postrm
+DEB_SYSTEMD_SYSTEM_COMPONENT:=control postinst prerm postrm
 DEB_SYSTEMD_SYSTEM_COMPONENT_PATH:=$(shell for f in $(DEB_SYSTEMD_SYSTEM_COMPONENT) ; do echo DEBIAN/$$f ; done )
 
 .PHONY: all clean deb-package install uninstall update status 

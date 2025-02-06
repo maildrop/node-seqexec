@@ -35,8 +35,9 @@ deb-package:$(DEB_SYSTEMD_SYSTEM) $(DEB_LIBEXEC) $(DEB_SYSTEMD_SYSTEM_COMPONENT_
 	fakeroot dpkg-deb --build .build .
 
 clean:
+	if [ -d "$(BUILD)" ]; then rm -rf .build ; fi 
+	if [ -f "$(PACKAGEFILE)" ] ; then rm "$(PACKAGEFILE)"; fi
 	find . -type f -name '*~' -delete
-	if [ -d $(BUILD) ]; then rm -rf .build ; fi 
 
 uninstall:
 	@if [ "installed" = "$$(if dpkg-query -s $(PACKAGENAME) > /dev/null 2>&1 ; then echo installed ; fi)" ] ; then sudo apt purge -y $(PACKAGENAME) ; fi

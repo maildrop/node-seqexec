@@ -52,7 +52,7 @@ class PromiselizedQueue extends EventTarget{
   shutdown(){
     while( this.promiseList.length ){
       const promise = this.promiseList.shift();
-      promise.reject( "queue shutdown " );
+      promise.reject( "queue shutdown" );
     }
   }
   
@@ -181,6 +181,7 @@ async function main(queue){
     }else{
       fs.rm( output_file_path );
     }
+    // ログ出力用の戻り値
     return [ "exec" , child_process_path , ...process_argv , ":" , `exit_code( ${exit_code} )` ] ;
   };
 

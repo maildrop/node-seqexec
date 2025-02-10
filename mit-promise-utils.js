@@ -1,4 +1,3 @@
-
 "use strict";
 
 /**
@@ -6,7 +5,8 @@
    そのための alt-implementation 
  */
 const withResolvers = Promise.withResolvers ? Promise.withResolvers : function () {
-  let resolve = undefined , reject = undefined  ;
+  let resolve = undefined ;
+  let reject  = undefined ;
   const promise = new Promise( (res,rej)=>{
     resolve = res ;
     reject = rej;
@@ -31,29 +31,30 @@ const withResolvers = Promise.withResolvers ? Promise.withResolvers : function (
 const rejectedPromise = function( reason ){
   // これをそのまま使おうとすると unhandledRejection が発生させられる場合がある。
   // const rejected = Promise.reject( error );
-  
-  // 本来はPromise.withResolvers を使うべき debian 12.9 の node.js は v18.19.0 なのでそれが無い。
   const {promise, reject} = withResolvers();
   
   // すぐさまreject() をしたいところだが、 reject() と await で間が開くのは良くないので、
   // async functionの中で reject() と await を行うことにする。
   
-  // node.js の Unhandled rejection は catch() もしくは await がされていないまま taskQueue が空になると発生するので
-  // 即座に await させて ハンドル済みにマークする
-  (async function (rejected) {
-    // this is rejectProc 
-    console.assert( this != null && (typeof this) === "function" );
-    this( reason ); // この時点で、reject になる。
-    try{
-      await rejected; // await rejected-promise は、例外を発生させる
-    }catch(error_of_reject){
+  ( async function ( promise , reason ) {
+    console.assert( this != null && (typeof this) === "function" ,
+                    '"this" is reject function of Promise' );
+    
+    // node.js の Unhandled rejection は catch() もしくは await がされていないまま taskQueue が空になると発生するので
+    // 即座に await させて ハンドル済みにマークする
+    
+    this( reason ); // この時点で、reject になるので 直後にawait で handled にマークする
+    
+    try {
+      await promise;  // この await rejected-promise は、例外を発生させる
+    } catch (error_of_reject) {
       // が、この例外は発生するのが「正しく」、そしてそれを握りつぶすのが正しい。
       console.assert( reason === error_of_reject );
     }
-  }.bind( rejectProc ) )(rejected);
+  }.bind( reject ) )( promise, reason );
   
   // この時点ではrejected は、恐らく pending 。そして 近い将来必ずrejected になる。
-  return rejected; 
+  return promise;
 };
 
 module.exports = {
